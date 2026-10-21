@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop Sphere - Ultimate Online Store</title>
+  <title>Shop Sphere - Online Store</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -43,15 +43,13 @@
 
     <!-- CATALOG SECTION -->
     <section id="catalogSection">
-      <!-- Search and Filter Bar -->
       <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8 flex flex-col gap-4">
         <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
           <div class="relative w-full md:w-96">
-            <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search Mobiles, Smart TVs, Shoes, Beauty..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+            <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search mobiles, shoes, smart tv, bottles..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
             <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
           </div>
           
-          <!-- Special Tags Filter -->
           <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
             <button onclick="filterTag('All')" class="tag-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white">All Items</button>
             <button onclick="filterTag('Trending')" class="tag-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700">🔥 Trending</button>
@@ -60,7 +58,6 @@
           </div>
         </div>
 
-        <!-- Category Buttons -->
         <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
           <button onclick="filterCategory('All')" class="cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">All Categories</button>
           <button onclick="filterCategory('Mobiles')" class="cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-gray-50 text-gray-700 border">📱 Mobiles</button>
@@ -73,7 +70,6 @@
         </div>
       </div>
 
-      <!-- Product Grid -->
       <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
     </section>
 
@@ -171,7 +167,7 @@
         <option value="Low Stock">Low Stock</option>
         <option value="Out of Stock">Out of Stock</option>
       </select>
-      <input type="text" id="newImg" placeholder="Image URL (Unsplash)" class="w-full border p-2 rounded-lg text-sm">
+      <input type="text" id="newImg" placeholder="Image URL" class="w-full border p-2 rounded-lg text-sm">
       <div class="flex justify-end gap-2 pt-2">
         <button onclick="closeAddProductModal()" class="px-4 py-2 border rounded-lg text-sm">Cancel</button>
         <button onclick="saveNewProduct()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm">Save</button>
@@ -182,22 +178,39 @@
   <script>
     const defaultProducts = [
       { id: 1, title: 'Flagship 5G Smartphone', price: 24999, category: 'Mobiles', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500' },
-      { id: 2, title: 'Wireless Noise Cancelling Headphones', price: 3999, category: 'Accessories', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500' },
-      { id: 3, title: 'AMOLED Smart Watch', price: 2999, category: 'Accessories', tag: 'New Release', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500' },
-      { id: 4, title: '55 inch 4K Smart TV', price: 38999, category: 'Electronics', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500' },
-      { id: 5, title: 'Designer Kurti Fashion', price: 999, category: 'Womens Fashion', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500' },
-      { id: 6, title: 'Casual Mens Cotton Shirt & Tops', price: 799, category: 'Mens Fashion', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500' },
-      { id: 7, title: 'Running Sports Shoes', price: 1999, category: 'Lifestyle & Beauty', tag: 'Best Seller', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500' },
-      { id: 8, title: 'Travel Trolley Luggage Bag', price: 3499, category: 'Lifestyle & Beauty', tag: 'New Release', stock: 'Out of Stock', img: 'https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=500' },
-      { id: 9, title: 'Stainless Steel Water Bottle', price: 499, category: 'Home & Kitchen', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500' },
-      { id: 10, title: 'Skincare Beauty Glow Kit', price: 1299, category: 'Lifestyle & Beauty', tag: 'New Release', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500' },
-      { id: 11, title: 'Double Door Large Refrigerator', price: 28999, category: 'Home & Kitchen', tag: 'Trending', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500' },
-      { id: 12, title: 'Leather College Backpack', price: 1499, category: 'Lifestyle & Beauty', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500' }
+      { id: 2, title: 'Budget 4G Smartphone', price: 11999, category: 'Mobiles', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=500' },
+      { id: 3, title: 'Pro Camera Smartphone', price: 45999, category: 'Mobiles', tag: 'New Release', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500' },
+      { id: 4, title: 'Wireless Noise Cancelling Headphones', price: 3999, category: 'Accessories', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500' },
+      { id: 5, title: 'AMOLED Smart Watch', price: 2999, category: 'Accessories', tag: 'New Release', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500' },
+      { id: 6, title: 'Bluetooth Neckband Earphones', price: 1299, category: 'Accessories', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500' },
+      { id: 7, title: '55 inch 4K Smart TV', price: 38999, category: 'Electronics', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500' },
+      { id: 8, title: 'Portable Bluetooth Speaker', price: 2199, category: 'Electronics', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500' },
+      { id: 9, title: 'Designer Kurti Fashion', price: 999, category: 'Womens Fashion', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500' },
+      { id: 10, title: 'Women Ethnic Party Wear Gown', price: 1799, category: 'Womens Fashion', tag: 'New Release', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500' },
+      { id: 11, title: 'Casual Summer Tops for Women', price: 599, category: 'Womens Fashion', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500' },
+      { id: 12, title: 'Casual Mens Cotton Shirt & Tops', price: 799, category: 'Mens Fashion', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500' },
+      { id: 13, title: 'Mens Formal Slim Fit Blazer', price: 2999, category: 'Mens Fashion', tag: 'Best Seller', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500' },
+      { id: 14, title: 'Mens Denim Jeans', price: 1299, category: 'Mens Fashion', tag: 'New Release', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1542272604-787c96355353?w=500' },
+      { id: 15, title: 'Running Sports Shoes', price: 1999, category: 'Lifestyle & Beauty', tag: 'Best Seller', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500' },
+      { id: 16, title: 'Stylish Casual Sneakers', price: 1499, category: 'Lifestyle & Beauty', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500' },
+      { id: 17, title: 'Travel Trolley Luggage Bag', price: 3499, category: 'Lifestyle & Beauty', tag: 'New Release', stock: 'Out of Stock', img: 'https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=500' },
+      { id: 18, title: 'Leather College Backpack', price: 1499, category: 'Lifestyle & Beauty', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500' },
+      { id: 19, title: 'Stainless Steel Water Bottle', price: 499, category: 'Home & Kitchen', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500' },
+      { id: 20, title: 'Insulated Copper Water Bottle', price: 699, category: 'Home & Kitchen', tag: 'New Release', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=500' },
+      { id: 21, title: 'Skincare Beauty Glow Kit', price: 1299, category: 'Lifestyle & Beauty', tag: 'New Release', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500' },
+      { id: 22, title: 'Professional Makeup Brush Set', price: 899, category: 'Lifestyle & Beauty', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=500' },
+      { id: 23, title: 'Double Door Large Refrigerator', price: 28999, category: 'Home & Kitchen', tag: 'Trending', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500' },
+      { id: 24, title: 'Automatic Front Load Washing Machine', price: 24999, category: 'Home & Kitchen', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=500' },
+      { id: 25, title: 'Electric Microwave Oven', price: 7999, category: 'Home & Kitchen', tag: 'New Release', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?w=500' }
     ];
 
-    let saved = JSON.parse(localStorage.getItem('ss_products'));
-    let products = (saved && saved.length > 0) ? saved : defaultProducts;
+    // Force refresh cache to v4 with 25 products
+    if (localStorage.getItem('ss_version') !== 'v4') {
+      localStorage.setItem('ss_products', JSON.stringify(defaultProducts));
+      localStorage.setItem('ss_version', 'v4');
+    }
 
+    let products = JSON.parse(localStorage.getItem('ss_products')) || defaultProducts;
     let cart = JSON.parse(localStorage.getItem('ss_cart')) || [];
     let orders = JSON.parse(localStorage.getItem('ss_orders')) || [];
     let currentCategory = 'All';
@@ -212,19 +225,234 @@
     function renderProducts() {
       const grid = document.getElementById('productGrid');
       grid.innerHTML = '';
-      const search = document.getElementById('searchInput').value.toLowerCase();
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
 
       const filtered = products.filter(p => {
         const matchesCat = currentCategory === 'All' || p.category === currentCategory;
         const matchesTag = currentTag === 'All' || p.tag === currentTag;
-        const matchesSearch = p.title.toLowerCase().includes(search);
+        const matchesSearch = p.title.toLowerCase().includes(search) || p.category.toLowerCase().includes(search);
         return matchesCat && matchesTag && matchesSearch;
       });
 
       if (filtered.length === 0) {
-        grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12">No products found matching your filter.</p>';
+        grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12">No products found matching your search.</p>';
         return;
       }
 
       filtered.forEach(p => {
-        let stockColor = p.stock === 'In Stock' ? 'bg-green-100 text-green-700' : p.stock === 'Low Stock' ? 'bg-yellow-100 text-
+        let stockColor = p.stock === 'In Stock' ? 'bg-green-100 text-green-700' : p.stock === 'Low Stock' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700';
+        
+        grid.innerHTML += `
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+            <div class="relative">
+              <img src="${p.img}" class="h-48 w-full object-cover">
+              <span class="absolute top-2 left-2 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">${p.tag}</span>
+            </div>
+            <div class="p-4 flex-grow flex flex-col justify-between">
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-[11px] text-gray-400 font-semibold uppercase">${p.category}</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${stockColor}">${p.stock}</span>
+                </div>
+                <h3 class="font-bold text-gray-800 text-sm mt-1">${p.title}</h3>
+              </div>
+              <div class="mt-4 flex justify-between items-center">
+                <span class="text-base font-bold text-gray-900">₹${p.price}</span>
+                <button onclick="addToCart(${p.id})" ${p.stock === 'Out of Stock' ? 'disabled class="bg-gray-300 text-gray-500 px-3 py-1.5 rounded-lg text-xs cursor-not-allowed"' : 'class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs hover:bg-indigo-700"'}>Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      updateCartCount();
+    }
+
+    function addToCart(id) {
+      const prod = products.find(p => p.id === id);
+      if (prod.stock === 'Out of Stock') return alert('Sorry, this item is out of stock.');
+      const item = cart.find(c => c.id === id);
+      if (item) item.qty++;
+      else cart.push({ ...prod, qty: 1 });
+      saveData();
+      updateCartCount();
+      renderCart();
+      alert('Added to cart successfully!');
+    }
+
+    function updateCartCount() {
+      const count = cart.reduce((acc, item) => acc + item.qty, 0);
+      document.getElementById('cartCount').innerText = count;
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      container.innerHTML = cart.length === 0 ? '<p class="text-gray-400 text-center py-8">Your cart is empty.</p>' : '';
+      let subtotal = 0;
+
+      cart.forEach(item => {
+        subtotal += item.price * item.qty;
+        container.innerHTML += `
+          <div class="flex items-center justify-between border-b pb-3">
+            <div>
+              <h4 class="font-bold text-sm">${item.title}</h4>
+              <p class="text-xs text-gray-500">₹${item.price} x ${item.qty}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="changeQty(${item.id}, -1)" class="px-2 py-0.5 border rounded text-xs">-</button>
+              <span class="text-xs font-bold">${item.qty}</span>
+              <button onclick="changeQty(${item.id}, 1)" class="px-2 py-0.5 border rounded text-xs">+</button>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById('cartSubtotal').innerText = '₹' + subtotal;
+    }
+
+    function changeQty(id, delta) {
+      const item = cart.find(c => c.id === id);
+      if (item) {
+        item.qty += delta;
+        if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
+      }
+      saveData();
+      renderCart();
+      updateCartCount();
+    }
+
+    function toggleCart() {
+      document.getElementById('cartModal').classList.toggle('hidden');
+      renderCart();
+    }
+
+    function checkout() {
+      if (cart.length === 0) return alert('Cart is empty!');
+      const total = cart.reduce((acc, i) => acc + i.price * i.qty, 0);
+      const newOrder = {
+        id: 'ORD-' + Math.floor(100000 + Math.random() * 900000),
+        items: [...cart],
+        amount: total,
+        status: 'Processing',
+        date: new Date().toLocaleDateString()
+      };
+      orders.push(newOrder);
+      cart = [];
+      saveData();
+      toggleCart();
+      alert('Order Placed Successfully! Tracking ID: ' + newOrder.id);
+      showSection('orders');
+    }
+
+    function renderOrders() {
+      const container = document.getElementById('ordersList');
+      container.innerHTML = orders.length === 0 ? '<p class="text-gray-400">No active orders found yet.</p>' : '';
+      orders.forEach(o => {
+        container.innerHTML += `
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
+            <div>
+              <span class="text-xs font-bold text-indigo-600">${o.id}</span>
+              <h4 class="font-bold text-gray-800 text-sm mt-1">Total: ₹${o.amount} (${o.date})</h4>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700">${o.status}</span>
+          </div>
+        `;
+      });
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      renderProducts();
+    }
+
+    function filterTag(tag) {
+      currentTag = tag;
+      renderProducts();
+    }
+
+    function filterProducts() {
+      renderProducts();
+    }
+
+    function showSection(sec) {
+      document.getElementById('catalogSection').classList.add('hidden');
+      document.getElementById('ordersSection').classList.add('hidden');
+      document.getElementById('adminSection').classList.add('hidden');
+
+      if (sec === 'catalog') document.getElementById('catalogSection').classList.remove('hidden');
+      if (sec === 'orders') {
+        document.getElementById('ordersSection').classList.remove('hidden');
+        renderOrders();
+      }
+      if (sec === 'admin') {
+        document.getElementById('adminSection').classList.remove('hidden');
+        renderAdmin();
+      }
+    }
+
+    function switchRole(role) {
+      const userBtn = document.getElementById('userRoleBtn');
+      const adminBtn = document.getElementById('adminRoleBtn');
+
+      if (role === 'admin') {
+        adminBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors bg-white text-indigo-700 shadow";
+        userBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors text-indigo-100 hover:text-white";
+        showSection('admin');
+      } else {
+        userBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors bg-white text-indigo-700 shadow";
+        adminBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors text-indigo-100 hover:text-white";
+        showSection('catalog');
+      }
+    }
+
+    function renderAdmin() {
+      document.getElementById('statProducts').innerText = products.length;
+      document.getElementById('statOrders').innerText = orders.length;
+      document.getElementById('statRevenue').innerText = '₹' + orders.reduce((acc, o) => acc + o.amount, 0);
+
+      const pTable = document.getElementById('adminProductTable');
+      pTable.innerHTML = '';
+      products.forEach(p => {
+        pTable.innerHTML += `
+          <tr>
+            <td class="px-6 py-4 font-bold text-xs">${p.title}</td>
+            <td class="px-6 py-4 text-xs">${p.category}</td>
+            <td class="px-6 py-4 text-xs">₹${p.price}</td>
+            <td class="px-6 py-4 text-xs font-semibold">${p.stock}</td>
+            <td class="px-6 py-4 text-xs"><button onclick="deleteProduct(${p.id})" class="text-red-600 hover:underline">Delete</button></td>
+          </tr>
+        `;
+      });
+    }
+
+    function deleteProduct(id) {
+      products = products.filter(p => p.id !== id);
+      saveData();
+      renderAdmin();
+      renderProducts();
+    }
+
+    function openAddProductModal() { document.getElementById('addProductModal').classList.remove('hidden'); }
+    function closeAddProductModal() { document.getElementById('addProductModal').classList.add('hidden'); }
+
+    function saveNewProduct() {
+      const title = document.getElementById('newTitle').value;
+      const price = Number(document.getElementById('newPrice').value);
+      const category = document.getElementById('newCategory').value;
+      const tag = document.getElementById('newTag').value;
+      const stock = document.getElementById('newStock').value;
+      const img = document.getElementById('newImg').value || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500';
+
+      if (!title || !price) return alert('Please enter Title and Price');
+
+      products.push({ id: Date.now(), title, price, category, tag, stock, img });
+      saveData();
+      closeAddProductModal();
+      renderAdmin();
+      renderProducts();
+      alert('Product added successfully!');
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
