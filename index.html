@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop Sphere - Online Store</title>
+  <title>Shop Sphere - Ultimate Online Store</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -43,20 +43,37 @@
 
     <!-- CATALOG SECTION -->
     <section id="catalogSection">
-      <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4 justify-between items-center">
-        <div class="relative w-full md:w-96">
-          <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search curti, tops, headphones..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-          <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
+      <!-- Search and Filter Bar -->
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8 flex flex-col gap-4">
+        <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+          <div class="relative w-full md:w-96">
+            <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search Mobiles, Smart TVs, Shoes, Beauty..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
+          </div>
+          
+          <!-- Special Tags Filter -->
+          <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
+            <button onclick="filterTag('All')" class="tag-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white">All Items</button>
+            <button onclick="filterTag('Trending')" class="tag-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700">🔥 Trending</button>
+            <button onclick="filterTag('Best Seller')" class="tag-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700">⭐ Best Sellers</button>
+            <button onclick="filterTag('New Release')" class="tag-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700">✨ New Releases</button>
+          </div>
         </div>
-        
-        <div class="flex flex-wrap gap-2 w-full md:w-auto">
-          <button onclick="filterCategory('All')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white">All</button>
-          <button onclick="filterCategory('Electronics')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700">Electronics</button>
-          <button onclick="filterCategory('Fashion')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700">Fashion</button>
-          <button onclick="filterCategory('Home')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700">Home</button>
+
+        <!-- Category Buttons -->
+        <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
+          <button onclick="filterCategory('All')" class="cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">All Categories</button>
+          <button onclick="filterCategory('Mobiles')" class="cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-gray-50 text-gray-700 border">📱 Mobiles</button>
+          <button onclick="filterCategory('Electronics')" class="cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-gray-50 text-gray-700 border">💻 Electronics & TVs</button>
+          <button onclick="filterCategory('Mens Fashion')" class="cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-gray-50 text-gray-700 border">👔 Men's Fashion</button>
+          <button onclick="filterCategory('Womens Fashion')" class="cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-gray-50 text-gray-700 border">👗 Women's Fashion</button>
+          <button onclick="filterCategory('Accessories')" class="cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-gray-50 text-gray-700 border">⌚ Watches & Audio</button>
+          <button onclick="filterCategory('Home & Kitchen')" class="cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-gray-50 text-gray-700 border">🏠 Appliances & Bottles</button>
+          <button onclick="filterCategory('Lifestyle & Beauty')" class="cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-gray-50 text-gray-700 border">💄 Beauty, Shoes & Luggage</button>
         </div>
       </div>
 
+      <!-- Product Grid -->
       <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
     </section>
 
@@ -89,7 +106,7 @@
       </div>
 
       <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
-        <div class="px-6 py-4 border-b font-bold text-gray-700">Inventory Items</div>
+        <div class="px-6 py-4 border-b font-bold text-gray-700">Inventory & Stock Status</div>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm">
             <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
@@ -97,6 +114,7 @@
                 <th class="px-6 py-3">Product</th>
                 <th class="px-6 py-3">Category</th>
                 <th class="px-6 py-3">Price</th>
+                <th class="px-6 py-3">Stock Status</th>
                 <th class="px-6 py-3">Action</th>
               </tr>
             </thead>
@@ -135,11 +153,25 @@
       <input type="text" id="newTitle" placeholder="Product Title" class="w-full border p-2 rounded-lg text-sm">
       <input type="number" id="newPrice" placeholder="Price (₹)" class="w-full border p-2 rounded-lg text-sm">
       <select id="newCategory" class="w-full border p-2 rounded-lg text-sm">
-        <option value="Electronics">Electronics</option>
-        <option value="Fashion">Fashion</option>
-        <option value="Home">Home</option>
+        <option value="Mobiles">Mobiles</option>
+        <option value="Electronics">Electronics & TVs</option>
+        <option value="Mens Fashion">Men's Fashion</option>
+        <option value="Womens Fashion">Women's Fashion</option>
+        <option value="Accessories">Accessories</option>
+        <option value="Home & Kitchen">Home & Kitchen</option>
+        <option value="Lifestyle & Beauty">Lifestyle & Beauty</option>
       </select>
-      <input type="text" id="newImg" placeholder="Image URL" class="w-full border p-2 rounded-lg text-sm">
+      <select id="newTag" class="w-full border p-2 rounded-lg text-sm">
+        <option value="Trending">Trending</option>
+        <option value="Best Seller">Best Seller</option>
+        <option value="New Release">New Release</option>
+      </select>
+      <select id="newStock" class="w-full border p-2 rounded-lg text-sm">
+        <option value="In Stock">In Stock</option>
+        <option value="Low Stock">Low Stock</option>
+        <option value="Out of Stock">Out of Stock</option>
+      </select>
+      <input type="text" id="newImg" placeholder="Image URL (Unsplash)" class="w-full border p-2 rounded-lg text-sm">
       <div class="flex justify-end gap-2 pt-2">
         <button onclick="closeAddProductModal()" class="px-4 py-2 border rounded-lg text-sm">Cancel</button>
         <button onclick="saveNewProduct()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm">Save</button>
@@ -149,11 +181,18 @@
 
   <script>
     const defaultProducts = [
-      { id: 1, title: 'Wireless Headphones', price: 2999, category: 'Electronics', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500' },
-      { id: 2, title: 'Smart Watch', price: 4999, category: 'Electronics', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500' },
-      { id: 3, title: 'Designer Kurti Fashion', price: 899, category: 'Fashion', img: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500' },
-      { id: 4, title: 'Casual Tops & T-Shirt', price: 699, category: 'Fashion', img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500' },
-      { id: 5, title: 'Ceramic Coffee Mug', price: 499, category: 'Home', img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500' }
+      { id: 1, title: 'Flagship 5G Smartphone', price: 24999, category: 'Mobiles', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500' },
+      { id: 2, title: 'Wireless Noise Cancelling Headphones', price: 3999, category: 'Accessories', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500' },
+      { id: 3, title: 'AMOLED Smart Watch', price: 2999, category: 'Accessories', tag: 'New Release', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500' },
+      { id: 4, title: '55 inch 4K Smart TV', price: 38999, category: 'Electronics', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500' },
+      { id: 5, title: 'Designer Kurti Fashion', price: 999, category: 'Womens Fashion', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500' },
+      { id: 6, title: 'Casual Mens Cotton Shirt & Tops', price: 799, category: 'Mens Fashion', tag: 'Trending', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500' },
+      { id: 7, title: 'Running Sports Shoes', price: 1999, category: 'Lifestyle & Beauty', tag: 'Best Seller', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500' },
+      { id: 8, title: 'Travel Trolley Luggage Bag', price: 3499, category: 'Lifestyle & Beauty', tag: 'New Release', stock: 'Out of Stock', img: 'https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=500' },
+      { id: 9, title: 'Stainless Steel Water Bottle', price: 499, category: 'Home & Kitchen', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500' },
+      { id: 10, title: 'Skincare Beauty Glow Kit', price: 1299, category: 'Lifestyle & Beauty', tag: 'New Release', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500' },
+      { id: 11, title: 'Double Door Large Refrigerator', price: 28999, category: 'Home & Kitchen', tag: 'Trending', stock: 'Low Stock', img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500' },
+      { id: 12, title: 'Leather College Backpack', price: 1499, category: 'Lifestyle & Beauty', tag: 'Best Seller', stock: 'In Stock', img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500' }
     ];
 
     let saved = JSON.parse(localStorage.getItem('ss_products'));
@@ -162,6 +201,7 @@
     let cart = JSON.parse(localStorage.getItem('ss_cart')) || [];
     let orders = JSON.parse(localStorage.getItem('ss_orders')) || [];
     let currentCategory = 'All';
+    let currentTag = 'All';
 
     function saveData() {
       localStorage.setItem('ss_products', JSON.stringify(products));
@@ -176,212 +216,15 @@
 
       const filtered = products.filter(p => {
         const matchesCat = currentCategory === 'All' || p.category === currentCategory;
+        const matchesTag = currentTag === 'All' || p.tag === currentTag;
         const matchesSearch = p.title.toLowerCase().includes(search);
-        return matchesCat && matchesSearch;
+        return matchesCat && matchesTag && matchesSearch;
       });
 
       if (filtered.length === 0) {
-        grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-8">No products found matching your search.</p>';
+        grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12">No products found matching your filter.</p>';
         return;
       }
 
       filtered.forEach(p => {
-        grid.innerHTML += `
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-            <img src="${p.img}" class="h-48 w-full object-cover">
-            <div class="p-4 flex-grow flex flex-col justify-between">
-              <div>
-                <span class="text-xs text-indigo-600 font-semibold uppercase">${p.category}</span>
-                <h3 class="font-bold text-gray-800 mt-1">${p.title}</h3>
-              </div>
-              <div class="mt-4 flex justify-between items-center">
-                <span class="text-lg font-bold text-gray-900">₹${p.price}</span>
-                <button onclick="addToCart(${p.id})" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-indigo-700">Add to Cart</button>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-      updateCartCount();
-    }
-
-    function addToCart(id) {
-      const prod = products.find(p => p.id === id);
-      const item = cart.find(c => c.id === id);
-      if (item) item.qty++;
-      else cart.push({ ...prod, qty: 1 });
-      saveData();
-      updateCartCount();
-      renderCart();
-      alert('Added to cart successfully!');
-    }
-
-    function updateCartCount() {
-      const count = cart.reduce((acc, item) => acc + item.qty, 0);
-      document.getElementById('cartCount').innerText = count;
-    }
-
-    function renderCart() {
-      const container = document.getElementById('cartItems');
-      container.innerHTML = cart.length === 0 ? '<p class="text-gray-400 text-center py-8">Your cart is empty.</p>' : '';
-      let subtotal = 0;
-
-      cart.forEach(item => {
-        subtotal += item.price * item.qty;
-        container.innerHTML += `
-          <div class="flex items-center justify-between border-b pb-3">
-            <div>
-              <h4 class="font-bold text-sm">${item.title}</h4>
-              <p class="text-xs text-gray-500">₹${item.price} x ${item.qty}</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button onclick="changeQty(${item.id}, -1)" class="px-2 py-0.5 border rounded text-xs">-</button>
-              <span class="text-xs font-bold">${item.qty}</span>
-              <button onclick="changeQty(${item.id}, 1)" class="px-2 py-0.5 border rounded text-xs">+</button>
-            </div>
-          </div>
-        `;
-      });
-
-      document.getElementById('cartSubtotal').innerText = '₹' + subtotal;
-    }
-
-    function changeQty(id, delta) {
-      const item = cart.find(c => c.id === id);
-      if (item) {
-        item.qty += delta;
-        if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
-      }
-      saveData();
-      renderCart();
-      updateCartCount();
-    }
-
-    function toggleCart() {
-      document.getElementById('cartModal').classList.toggle('hidden');
-      renderCart();
-    }
-
-    function checkout() {
-      if (cart.length === 0) return alert('Cart is empty!');
-      const total = cart.reduce((acc, i) => acc + i.price * i.qty, 0);
-      const newOrder = {
-        id: 'ORD-' + Math.floor(100000 + Math.random() * 900000),
-        items: [...cart],
-        amount: total,
-        status: 'Processing',
-        date: new Date().toLocaleDateString()
-      };
-      orders.push(newOrder);
-      cart = [];
-      saveData();
-      toggleCart();
-      alert('Order Placed Successfully! ID: ' + newOrder.id);
-      showSection('orders');
-    }
-
-    function renderOrders() {
-      const container = document.getElementById('ordersList');
-      container.innerHTML = orders.length === 0 ? '<p class="text-gray-400">No active orders found yet. Place an order from the catalog!</p>' : '';
-      orders.forEach(o => {
-        container.innerHTML += `
-          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
-            <div>
-              <span class="text-xs font-bold text-indigo-600">${o.id}</span>
-              <h4 class="font-bold text-gray-800 text-sm mt-1">Total: ₹${o.amount} (${o.date})</h4>
-            </div>
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700">${o.status}</span>
-          </div>
-        `;
-      });
-    }
-
-    function filterCategory(cat) {
-      currentCategory = cat;
-      renderProducts();
-    }
-
-    function filterProducts() {
-      renderProducts();
-    }
-
-    function showSection(sec) {
-      document.getElementById('catalogSection').classList.add('hidden');
-      document.getElementById('ordersSection').classList.add('hidden');
-      document.getElementById('adminSection').classList.add('hidden');
-
-      if (sec === 'catalog') document.getElementById('catalogSection').classList.remove('hidden');
-      if (sec === 'orders') {
-        document.getElementById('ordersSection').classList.remove('hidden');
-        renderOrders();
-      }
-      if (sec === 'admin') {
-        document.getElementById('adminSection').classList.remove('hidden');
-        renderAdmin();
-      }
-    }
-
-    function switchRole(role) {
-      const userBtn = document.getElementById('userRoleBtn');
-      const adminBtn = document.getElementById('adminRoleBtn');
-
-      if (role === 'admin') {
-        adminBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors bg-white text-indigo-700 shadow";
-        userBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors text-indigo-100 hover:text-white";
-        showSection('admin');
-      } else {
-        userBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors bg-white text-indigo-700 shadow";
-        adminBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors text-indigo-100 hover:text-white";
-        showSection('catalog');
-      }
-    }
-
-    function renderAdmin() {
-      document.getElementById('statProducts').innerText = products.length;
-      document.getElementById('statOrders').innerText = orders.length;
-      document.getElementById('statRevenue').innerText = '₹' + orders.reduce((acc, o) => acc + o.amount, 0);
-
-      const pTable = document.getElementById('adminProductTable');
-      pTable.innerHTML = '';
-      products.forEach(p => {
-        pTable.innerHTML += `
-          <tr>
-            <td class="px-6 py-4 font-bold">${p.title}</td>
-            <td class="px-6 py-4">${p.category}</td>
-            <td class="px-6 py-4">₹${p.price}</td>
-            <td class="px-6 py-4"><button onclick="deleteProduct(${p.id})" class="text-red-600 hover:underline">Delete</button></td>
-          </tr>
-        `;
-      });
-    }
-
-    function deleteProduct(id) {
-      products = products.filter(p => p.id !== id);
-      saveData();
-      renderAdmin();
-      renderProducts();
-    }
-
-    function openAddProductModal() { document.getElementById('addProductModal').classList.remove('hidden'); }
-    function closeAddProductModal() { document.getElementById('addProductModal').classList.add('hidden'); }
-
-    function saveNewProduct() {
-      const title = document.getElementById('newTitle').value;
-      const price = Number(document.getElementById('newPrice').value);
-      const category = document.getElementById('newCategory').value;
-      const img = document.getElementById('newImg').value || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500';
-
-      if (!title || !price) return alert('Please enter Title and Price');
-
-      products.push({ id: Date.now(), title, price, category, img });
-      saveData();
-      closeAddProductModal();
-      renderAdmin();
-      renderProducts();
-      alert('Product added successfully!');
-    }
-
-    renderProducts();
-  </script>
-</body>
-</html>
+        let stockColor = p.stock === 'In Stock' ? 'bg-green-100 text-green-700' : p.stock === 'Low Stock' ? 'bg-yellow-100 text-
