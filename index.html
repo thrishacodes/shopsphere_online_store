@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Sphere - Online Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .badge { position: absolute; top: -8px; right: -8px; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-indigo-600 text-white shadow-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="flex items-center space-x-3">
+        <i class="fa-solid me-2 fa-bag-shopping text-2xl"></i>
+        <h1 class="text-2xl font-bold tracking-wide">Shop Sphere</h1>
+      </div>
+      
+      <div class="flex items-center space-x-6">
+        <!-- Role Toggle -->
+        <div class="flex items-center bg-indigo-700 rounded-lg p-1 text-xs">
+          <button id="userRoleBtn" onclick="switchRole('user')" class="px-3 py-1.5 rounded-md font-medium transition-colors bg-white text-indigo-700 shadow">User Mode</button>
+          <button id="adminRoleBtn" onclick="switchRole('admin')" class="px-3 py-1.5 rounded-md font-medium transition-colors text-indigo-100 hover:text-white">Admin Mode</button>
+        </div>
+
+        <!-- Navigation -->
+        <button onclick="showSection('catalog')" class="hover:text-indigo-200 text-sm font-medium">Catalog</button>
+        <button onclick="showSection('orders')" class="hover:text-indigo-200 text-sm font-medium">My Orders</button>
+        
+        <button onclick="toggleCart()" class="relative p-2 text-white hover:text-indigo-200">
+          <i class="fa-solid fa-cart-shopping text-xl"></i>
+          <span id="cartCount" class="badge bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+
+    <!-- USER VIEW: CATALOG SECTION -->
+    <section id="catalogSection">
+      <!-- Search and Filter Bar -->
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4 justify-between items-center">
+        <div class="relative w-full md:w-96">
+          <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search products..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
+        </div>
+        
+        <div class="flex flex-wrap gap-2 w-full md:w-auto">
+          <button onclick="filterCategory('All')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white">All</button>
+          <button onclick="filterCategory('Electronics')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700">Electronics</button>
+          <button onclick="filterCategory('Fashion')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700">Fashion</button>
+          <button onclick="filterCategory('Home')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700">Home</button>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+    </section>
+
+    <!-- USER VIEW: ORDERS TRACKING SECTION -->
+    <section id="ordersSection" class="hidden">
+      <h2 class="text-2xl font-bold mb-6">Order History & Tracking</h2>
+      <div id="ordersList" class="space-y-4"></div>
+    </section>
+
+    <!-- ADMIN VIEW: DASHBOARD -->
+    <section id="adminSection" class="hidden">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">Admin Management Dashboard</h2>
+        <button onclick="openAddProductModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 text-sm font-medium"><i class="fa-solid fa-plus mr-2"></i>Add New Product</button>
+      </div>
+
+      <!-- Admin Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <p class="text-sm text-gray-500 font-medium">Total Products</p>
+          <p id="statProducts" class="text-3xl font-bold text-gray-800 mt-2">0</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <p class="text-sm text-gray-500 font-medium">Total Orders</p>
+          <p id="statOrders" class="text-3xl font-bold text-gray-800 mt-2">0</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <p class="text-sm text-gray-500 font-medium">Total Revenue</p>
+          <p id="statRevenue" class="text-3xl font-bold text-indigo-600 mt-2">₹0</p>
+        </div>
+      </div>
+
+      <!-- Manage Inventory -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+        <div class="px-6 py-4 border-b font-bold text-gray-700">Inventory Items</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+              <tr>
+                <th class="px-6 py-3">Product</th>
+                <th class="px-6 py-3">Category</th>
+                <th class="px-6 py-3">Price</th>
+                <th class="px-6 py-3">Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminProductTable" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Manage Orders -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b font-bold text-gray-700">Customer Orders</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+              <tr>
+                <th class="px-6 py-3">Order ID</th>
+                <th class="px-6 py-3">Customer</th>
+                <th class="px-6 py-3">Amount</th>
+                <th class="px-6 py-3">Status</th>
+                <th class="px-6 py-3">Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrderTable" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Slide-over Cart Drawer -->
+  <div id="cartModal" class="fixed inset-0 z-50 overflow-hidden hidden">
+     <div class="absolute inset-0 bg-black bg-opacity-50 transition-opacity" onclick="toggleCart()"></div>
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div class="w-screen max-w-md bg-white shadow-xl flex flex-col">
+        <div class="p-6 bg-indigo-600 text-white flex justify-between items-center">
+          <h2 class="text-lg font-bold">Shopping Cart</h2>
+          <button onclick="toggleCart()" class="text-white hover:text-gray-200"><i class="fa-solid fa-xmark text-xl"></i></button>
+        </div>
+        <div id="cartItems" class="flex-grow p-6 overflow-y-auto space-y-4"></div>
+        <div class="p-6 border-t bg-gray-50 space-y-4">
+          <div class="flex justify-between font-bold text-gray-800">
+            <span>Subtotal</span>
+            <span id="cartSubtotal">₹0</span>
+          </div>
+          <button onclick="checkout()" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">Proceed to Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div id="addProductModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+      <h3 class="text-xl font-bold">Add New Product</h3>
+      <input type="text" id="newTitle" placeholder="Product Title" class="w-full border p-2 rounded-lg text-sm">
+      <input type="number" id="newPrice" placeholder="Price (₹)" class="w-full border p-2 rounded-lg text-sm">
+      <select id="newCategory" class="w-full border p-2 rounded-lg text-sm">
+        <option value="Electronics">Electronics</option>
+        <option value="Fashion">Fashion</option>
+        <option value="Home">Home</option>
+      </select>
+      <input type="text" id="newImg" placeholder="Image URL (Unsplash or web link)" class="w-full border p-2 rounded-lg text-sm">
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeAddProductModal()" class="px-4 py-2 border rounded-lg text-sm">Cancel</button>
+        <button onclick="saveNewProduct()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-gray-800 text-gray-400 py-6 text-center text-sm border-t border-gray-700 mt-auto">
+    <p>&copy; 2026 Shop Sphere Online Store. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let products = JSON.parse(localStorage.getItem('ss_products')) || [
+      { id: 1, title: 'Wireless Headphones', price: 2999, category: 'Electronics', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500' },
+      { id: 2, title: 'Smart Watch', price: 4999, category: 'Electronics', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500' },
+      { id: 3, title: 'Cotton Casual T-Shirt', price: 899, category: 'Fashion', img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500' },
+      { id: 4, title: 'Ceramic Coffee Mug', price: 499, category: 'Home', img: 
+       'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500' }
+    ];
+
+    let cart = JSON.parse(localStorage.getItem('ss_cart')) || [];
+    let orders = JSON.parse(localStorage.getItem('ss_orders')) || [];
+    let currentCategory = 'All';
+
+    function saveData() {
+      localStorage.setItem('ss_products', JSON.stringify(products));
+      localStorage.setItem('ss_cart', JSON.stringify(cart));
+      localStorage.setItem('ss_orders', JSON.stringify(orders));
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+      const search = document.getElementById('searchInput').value.toLowerCase();
+
+      const filtered = products.filter(p => {
+        const matchesCat = currentCategory === 'All' || p.category === currentCategory;
+        const matchesSearch = p.title.toLowerCase().includes(search);
+        return matchesCat && matchesSearch;
+      });
+
+      filtered.forEach(p => {
+        grid.innerHTML += `
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+            <img src="${p.img}" class="h-48 w-full object-cover">
+            <div class="p-4 flex-grow flex flex-col justify-between">
+              <div>
+                <span class="text-xs text-indigo-600 font-semibold uppercase">${p.category}</span>
+                <h3 class="font-bold text-gray-800 mt-1">${p.title}</h3>
+              </div>
+              <div class="mt-4 flex justify-between items-center">
+                <span class="text-lg font-bold text-gray-900">₹${p.price}</span>
+                <button onclick="addToCart(${p.id})" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-indigo-700">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      updateCartCount();
+    }
+
+    function addToCart(id) {
+      const prod = products.find(p => p.id === id);
+      const item = cart.find(c => c.id === id);
+      if (item) item.qty++;
+      else cart.push({ ...prod, qty: 1 });
+      saveData();
+      updateCartCount();
+      renderCart();
+    }
+
+    function updateCartCount() {
+      const count = cart.reduce((acc, item) => acc + item.qty, 0);
+      document.getElementById('cartCount').innerText = count;
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      container.innerHTML = cart.length === 0 ? '<p class="text-gray-400 text-center py-8">Your cart is empty.</p>' : '';
+      let subtotal = 0;
+
+      cart.forEach(item => {
+        subtotal += item.price * item.qty;
+        container.innerHTML += `
+          <div class="flex items-center justify-between border-b pb-3">
+            <div>
+              <h4 class="font-bold text-sm">${item.title}</h4>
+              <p class="text-xs text-gray-500">₹${item.price} x ${item.qty}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="changeQty(${item.id}, -1)" class="px-2 py-0.5 border rounded text-xs">-</button>
+                           <span class="text-xs font-bold">${item.qty}</span>
+              <button onclick="changeQty(${item.id}, 1)" class="px-2 py-0.5 border rounded text-xs">+</button>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById('cartSubtotal').innerText = '₹' + subtotal;
+    }
+
+    function changeQty(id, delta) {
+      const item = cart.find(c => c.id === id);
+      if (item) {
+        item.qty += delta;
+        if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
+      }
+      saveData();
+      renderCart();
+      updateCartCount();
+    }
+
+    function toggleCart() {
+      const modal = document.getElementById('cartModal');
+      modal.classList.toggle('hidden');
+      renderCart();
+    }
+
+    function checkout() {
+      if (cart.length === 0) return alert('Cart is empty!');
+      const total = cart.reduce((acc, i) => acc + i.price * i.qty, 0);
+      const newOrder = {
+        id: 'ORD-' + Math.floor(100000 + Math.random() * 900000),
+        items: [...cart],
+        amount: total,
+        status: 'Processing',
+        date: new Date().toLocaleDateString()
+      };
+      orders.push(newOrder);
+      cart = [];
+      saveData();
+      toggleCart();
+      alert('Order Placed Successfully! Tracking ID: ' + newOrder.id);
+      showSection('orders');
+    }
+
+    function renderOrders() {
+      const container = document.getElementById('ordersList');
+      container.innerHTML = orders.length === 0 ? '<p class="text-gray-400">No active orders found.</p>' : '';
+      
+      orders.forEach(o => {
+        container.innerHTML += `
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <span class="text-xs font-bold text-indigo-600">${o.id}</span>
+              <h4 class="font-bold text-gray-800 text-sm mt-1">Total: ₹${o.amount}</h4>
+              <p class="text-xs text-gray-400">Placed on: ${o.date}</p>
+            </div>
+            <div>
+              <span class="px-3 py-1 rounded-full text-xs font-bold ${o.status === 'Delivered' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">${o.status}</span>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      renderProducts();
+    }
+
+    function filterProducts() {
+      renderProducts();
+    }
+
+    function showSection(sec) {
+      document.getElementById('catalogSection').classList.add('hidden');
+      document.getElementById('ordersSection').classList.add('hidden');
+      document.getElementById('adminSection').classList.add('hidden');
+
+      if (sec === 'catalog') {
+        document.getElementById('catalogSection').classList.remove('hidden');
+        renderProducts();
+      } else if (sec === 'orders') {
+        document.getElementById('ordersSection').classList.remove('hidden');
+        renderOrders();
+      } else if (sec === 'admin') {
+        document.getElementById('adminSection').classList.remove('hidden');
+        renderAdmin();
+          }
+    }
+
+    function switchRole(role) {
+      const userBtn = document.getElementById('userRoleBtn');
+      const adminBtn = document.getElementById('adminRoleBtn');
+
+      if (role === 'admin') {
+        adminBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors bg-white text-indigo-700 shadow";
+        userBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors text-indigo-100 hover:text-white";
+        showSection('admin');
+      } else {
+        userBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors bg-white text-indigo-700 shadow";
+        adminBtn.className = "px-3 py-1.5 rounded-md font-medium transition-colors text-indigo-100 hover:text-white";
+        showSection('catalog');
+      }
+    }
+
+    function renderAdmin() {
+      document.getElementById('statProducts').innerText = products.length;
+      document.getElementById('statOrders').innerText = orders.length;
+      document.getElementById('statRevenue').innerText = '₹' + orders.reduce((acc, o) => acc + o.amount, 0);
+
+      const pTable = document.getElementById('adminProductTable');
+      pTable.innerHTML = '';
+      products.forEach(p => {
+        pTable.innerHTML += `
+          <tr>
+            <td class="px-6 py-4 font-bold">${p.title}</td>
+            <td class="px-6 py-4">${p.category}</td>
+            <td class="px-6 py-4">₹${p.price}</td>
+            <td class="px-6 py-4"><button onclick="deleteProduct(${p.id})" class="text-red-600 hover:underline">Delete</button></td>
+          </tr>
+        `;
+      });
+
+      const oTable = document.getElementById('adminOrderTable');
+      oTable.innerHTML = '';
+      orders.forEach(o => {
+        oTable.innerHTML += `
+          <tr>
+            <td class="px-6 py-4 font-bold">${o.id}</td>
+            <td class="px-6 py-4">Customer</td>
+            <td class="px-6 py-4">₹${o.amount}</td>
+            <td class="px-6 py-4"><span class="font-bold">${o.status}</span></td>
+            <td class="px-6 py-4"><button onclick="toggleOrderStatus('${o.id}')" class="text-indigo-600 hover:underline">Update Status</button></td>
+          </tr>
+        `;
+      });
+    }
+
+    function deleteProduct(id) {
+      products = products.filter(p => p.id !== id);
+      saveData();
+      renderAdmin();
+    }
+
+    function toggleOrderStatus(id) {
+      const order = orders.find(o => o.id === id);
+      if (order) {
+        order.status = order.status === 'Processing' ? 'Delivered' : 'Processing';
+        saveData();
+        renderAdmin();
+      }
+    }
+
+    function openAddProductModal() {
+      document.getElementById('addProductModal').classList.remove('hidden');
+    }
+
+    function closeAddProductModal() {
+      document.getElementById('addProductModal').classList.add('hidden');
+    }
+
+    function saveNewProduct() {
+      const title = document.getElementById('newTitle').value;
+      const price = Number(document.getElementById('newPrice').value);
+      const category = document.getElementById('newCategory').value;
+      const img = document.getElementById('newImg').value || 'https…
+        'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500';
+
+      if (!title || !price) return alert('Please enter Title and Price');
+
+      products.push({ id: Date.now(), title, price, category, img });
+      saveData();
+      closeAddProductModal();
+      renderAdmin();
+    }
+
+    // Initial render
+    renderProducts();
+  </script>
+</body>
+</html>
